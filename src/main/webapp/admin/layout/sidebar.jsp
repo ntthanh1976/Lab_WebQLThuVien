@@ -9,7 +9,7 @@
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link d-flex align-items-center" href="doc-gia">
+      <a class="nav-link d-flex align-items-center" href="docgia">
         <i class="bi bi-people me-2"></i> Quản lý Độc giả
       </a>
     </li>

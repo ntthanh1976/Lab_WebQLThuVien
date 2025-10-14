@@ -54,7 +54,7 @@
                                                 <th>Thao tác</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody>                                         
                                             <tr>
                                                 <td>1</td>
                                                 <td>Nguyễn Văn A</td>
@@ -70,7 +70,7 @@
                                                         <i class="bi bi-trash"></i>
                                                     </button>
                                                 </td>
-                                            </tr>
+                                            </tr>                                        
                                             <tr>
                                                 <td>2</td>
                                                 <td>Trần Thị B</td>

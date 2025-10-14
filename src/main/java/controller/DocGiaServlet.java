@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author ADMIN
  */
-@WebServlet(name = "DocGiaServlet", urlPatterns = {"/doc-gia"})
+@WebServlet(name = "DocGiaServlet", urlPatterns = {"/docgia"})
 public class DocGiaServlet extends HttpServlet {
 
     /**
