@@ -1,4 +1,5 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib  prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
     <head>
         <meta charset="UTF-8">
@@ -7,7 +8,7 @@
     </head>
     <body>
         <%@ include file="layout/nav.jsp" %>
-
+        <%@include  file="layout/thongbao.jsp" %>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-2">
@@ -31,7 +32,7 @@
                                 <form class="row g-3 mb-3" action="docgia" method="post">
                                     <input type="hidden" name="action" value="search" />
                                     <div class="col-md-6">
-                                        <input type="text" name="hoten" value="" class="form-control" placeholder="Nhập tên độc giả cần tra cứu...">
+                                        <input type="text" name="hoten" value="${param.hoten}" class="form-control" placeholder="Nhập tên độc giả cần tra cứu...">
                                     </div>
                                     <div class="col-md-3">
                                         <button type="submit" class="btn btn-primary">
@@ -54,14 +55,15 @@
                                                 <th>Thao tác</th>
                                             </tr>
                                         </thead>
-                                        <tbody>                                         
+                                        <tbody>  
+                                            <c:forEach var="dg" items="${dsDG}" >
                                             <tr>
-                                                <td>1</td>
-                                                <td>Nguyễn Văn A</td>
-                                                <td>2001-05-12</td>
-                                                <td>123 Trần Hưng Đạo, Q.1</td>
-                                                <td>0912345678</td>
-                                                <td>a.nguyen@gmail.com</td>
+                                                <td>${dg.maDocGia}</td>
+                                                <td>${dg.hoTen}</td>
+                                                <td>${dg.ngaySinh}</td>
+                                                <td>${dg.diaChi}</td>
+                                                <td>${dg.soDienThoai}</td>
+                                                <td>${dg.email}</td>
                                                 <td>
                                                     <button class="btn btn-warning btn-sm btnEdit" data-bs-toggle="modal" data-bs-target="#modalEditReader">
                                                         <i class="bi bi-pencil-square"></i>
@@ -70,23 +72,8 @@
                                                         <i class="bi bi-trash"></i>
                                                     </button>
                                                 </td>
-                                            </tr>                                        
-                                            <tr>
-                                                <td>2</td>
-                                                <td>Trần Thị B</td>
-                                                <td>2002-08-20</td>
-                                                <td>56 Nguyễn Trãi, Q.5</td>
-                                                <td>0987654321</td>
-                                                <td>b.tran@gmail.com</td>
-                                                <td>
-                                                    <button class="btn btn-warning btn-sm btnEdit" data-bs-toggle="modal" data-bs-target="#modalEditReader">
-                                                        <i class="bi bi-pencil-square"></i>
-                                                    </button>
-                                                    <button class="btn btn-danger btn-sm">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>                                              
+                                            </tr>          
+                                            </c:forEach>                                         
                                         </tbody>
                                     </table>
                                 </div>

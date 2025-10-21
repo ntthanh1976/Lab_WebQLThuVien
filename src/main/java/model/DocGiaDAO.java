@@ -40,6 +40,35 @@ public class DocGiaDAO {
         return list;
     }
 
+     public DocGia getById(int maDocGia) {
+        DocGia dg = null;
+        String sql = "SELECT * FROM DocGia where madocgia=?";
+        try{
+        
+            Connection conn = DBConnection.getConnection();
+     
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ps.setInt(1, maDocGia);
+             ResultSet rs = ps.executeQuery(); 
+
+            if (rs.next()) {
+                    dg = new DocGia(
+                    rs.getInt("maDocGia"),
+                    rs.getString("HoTen"),
+                    rs.getDate("NgaySinh"),
+                    rs.getString("DiaChi"),
+                    rs.getString("SoDienThoai"),
+                    rs.getString("Email")
+                );                
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Lỗi khi lấy danh sách độc giả:");
+            e.printStackTrace();
+        }
+
+        return dg;
+    }
     // Thêm độc giả mới
     public boolean insertDocGia(DocGia dg) {
         String sql = "INSERT INTO DocGia(HoTen, NgaySinh, DiaChi, SoDienThoai, Email) VALUES (?, ?, ?, ?, ?)";
@@ -147,8 +176,6 @@ public class DocGiaDAO {
          for(DocGia x: dao.getAll())
          {
              System.out.println(x);
-         }
-         
-         
+         }          
     }
 }
