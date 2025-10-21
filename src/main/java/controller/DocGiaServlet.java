@@ -62,11 +62,23 @@ public class DocGiaServlet extends HttpServlet {
         if(action==null)
         {
            action="list";
-        }
+        }        
+       
         switch (action) {
-            case "list":
-                var dsDocGia = dgDAO.getAll(); //goi DAO de lay du lieu tu DB
-                request.setAttribute("dsDG", dsDocGia);
+            case "list":                
+                int pageSize=5;
+                int page =1;
+                if(request.getParameter("page")!=null)
+                {
+                   page = Integer.parseInt(request.getParameter("page"));
+                }                
+                var dsDocGia = dgDAO.getByPage(page, pageSize); //goi DAO de lay du lieu tu DB    
+                //tinh tong so trang co the co
+                var tongsotrang = (int) Math.ceil((double)dgDAO.getAll().size()/pageSize);
+                //truyen du lieu cho View (JSP)                
+                request.setAttribute("tongsotrang", tongsotrang);               
+                request.setAttribute("dsDG", dsDocGia);               
+                request.setAttribute("currentPage", page);                
                 request.getRequestDispatcher("/admin/list-docgia.jsp").forward(request, response);     
                 break;   
             case "search":
@@ -78,15 +90,25 @@ public class DocGiaServlet extends HttpServlet {
             case "add":
                 xuLyThem(request,response);
                 break;
+            case "delete":
+                String id_str = request.getParameter("id");                
+                int id = Integer.parseInt(id_str);                
+              //  System.out.println("ma doc gia:" + id);
+                boolean kq= dgDAO.deleteDocGia(id); //goi DAO de xoa doc gia   
+                //thong bao cho client biet ket qua    
+                if(kq==true)
+                    request.setAttribute("success", "Xóa độc giả thành công");
+                else
+                   request.setAttribute("error", "Không thể xóa độc giả, do có chi tiêt mượn sách");
+                //dieu huong nguoi dung den trang quan ly doc gia 
+                 request.getRequestDispatcher("docgia?action=list").forward(request, response);
+                break;                
             case "edit":
-                  int id = Integer.parseInt(request.getParameter("id"));
-                  var kq = dgDAO.getById(id);
-                  response.setContentType("application/json");
-                  response.setCharacterEncoding("UTF-8");
-                  Gson gson = new Gson();
-                  PrintWriter out = response.getWriter();
-                  out.print(gson.toJson(kq));
-                  out.flush();
+                  hienThiFormEdit(request,response);  
+                  break;
+            case "update":
+                   xuLyUpdate(request,response);
+                   break; 
             //...
         }     
        
@@ -143,13 +165,61 @@ public class DocGiaServlet extends HttpServlet {
             Date ngaysinh = new Date(sdf.parse(ngaysinhStr).getTime());
             DocGia  dg = new DocGia(hoten,ngaysinh, diachi, sodienthoai, email);
             
-            dgDAO.insertDocGia(dg);
+            dgDAO.insertDocGia(dg); //goi DAO de insert doc gia
             //xu ly gui thong bao
             request.setAttribute("success", "Thêm độc giả thành công");
             //chuyen tiep ve action=list
             request.getRequestDispatcher("/docgia?action=list").forward(request, response);
         } catch (Exception ex) {
+            try {
+                System.out.println("Loi:" + ex.toString());
+                request.setAttribute("error", "Thêm độc giả thất bại");            
+                request.getRequestDispatcher("/docgia?action=list").forward(request, response);
+            } catch (Exception ex1) {                
+            }
+        }
+    }
+
+    private void hienThiFormEdit(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String id_str = request.getParameter("id");  
+            int id = Integer.parseInt(id_str);
+            DocGia dg = dgDAO.getById(id); //goi DAO de lay thong tin doc gia
+            //tra ve giao dien de chinh sua thong tin doc gia
+            request.setAttribute("dg", dg);
+            request.getRequestDispatcher("/admin/edit-docgia.jsp").forward(request, response);
+        } catch (Exception ex) {
             System.out.println("Loi:" + ex.toString());
+        } 
+    }
+
+    private void xuLyUpdate(HttpServletRequest request, HttpServletResponse response) {
+       try {
+            String hoten = request.getParameter("HoTen");
+            String ngaysinhStr = request.getParameter("NgaySinh");
+            String diachi = request.getParameter("DiaChi");
+            String sodienthoai = request.getParameter("SoDienThoai");
+            String email = request.getParameter("Email");
+            int maDocGia = Integer.parseInt(request.getParameter("MaDocGia"));
+                    
+            
+            
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date ngaysinh = new Date(sdf.parse(ngaysinhStr).getTime());
+            DocGia  dg = new DocGia(maDocGia, hoten,ngaysinh, diachi, sodienthoai, email);
+            
+            dgDAO.updateDocGia(dg); //goi DAO de update doc gia
+            //xu ly gui thong bao
+            request.setAttribute("success", "Cập nhật độc giả thành công");
+            //chuyen tiep ve action=list
+            request.getRequestDispatcher("/docgia?action=list").forward(request, response);
+        } catch (Exception ex) {
+            try {
+                System.out.println("Loi:" + ex.toString());
+                request.setAttribute("error", "Cập nhật độc giả thất bại");            
+                request.getRequestDispatcher("/docgia?action=list").forward(request, response);
+            } catch (Exception ex1) {                
+            }
         }
     }
 

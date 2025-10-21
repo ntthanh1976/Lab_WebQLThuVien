@@ -7,18 +7,30 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <%
-    if (request.getAttribute("success") != null) {        
+    if (request.getAttribute("success") != null) {
 %>
 <script>
-    Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "<%=request.getAttribute("success")%>",
-        showConfirmButton: false,
-        timer: 1500
-    });
+     Swal.fire({
+            title: "<%=request.getAttribute("success")%>",
+                    icon: "success",
+                    draggable: true
+            });
 </script>
+<%
+    }
+%>
 
+
+<%
+    if (request.getAttribute("error") != null) {
+%>
+<script>
+            Swal.fire({
+            title: "<%=request.getAttribute("error")%>",
+                    icon: "error",
+                    draggable: true
+            });
+</script>
 <%
     }
 %>

@@ -16,18 +16,16 @@ public class DocGiaDAO {
         List<DocGia> list = new ArrayList<>();
         String sql = "SELECT * FROM DocGia";
 
-        try (Connection conn = DBConnection.getConnection();
-             Statement st = conn.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
+        try (Connection conn = DBConnection.getConnection(); Statement st = conn.createStatement(); ResultSet rs = st.executeQuery(sql)) {
 
             while (rs.next()) {
                 DocGia dg = new DocGia(
-                    rs.getInt("maDocGia"),
-                    rs.getString("HoTen"),
-                    rs.getDate("NgaySinh"),
-                    rs.getString("DiaChi"),
-                    rs.getString("SoDienThoai"),
-                    rs.getString("Email")
+                        rs.getInt("maDocGia"),
+                        rs.getString("HoTen"),
+                        rs.getDate("NgaySinh"),
+                        rs.getString("DiaChi"),
+                        rs.getString("SoDienThoai"),
+                        rs.getString("Email")
                 );
                 list.add(dg);
             }
@@ -36,30 +34,56 @@ public class DocGiaDAO {
             System.err.println("Lỗi khi lấy danh sách độc giả:");
             e.printStackTrace();
         }
-
         return list;
     }
+   
+    public List<DocGia> getByPage(int page, int pageSize) {
+        List<DocGia> list = new ArrayList<>();
+        String sql = "SELECT * FROM DocGia order by MaDocGia offset ? rows fetch next ? rows only";
 
-     public DocGia getById(int maDocGia) {
+        try{
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement pstm = conn.prepareStatement(sql);            
+            pstm.setInt(1, (page-1)*pageSize);
+            pstm.setInt(2, pageSize);
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                DocGia dg = new DocGia(
+                        rs.getInt("maDocGia"),
+                        rs.getString("HoTen"),
+                        rs.getDate("NgaySinh"),
+                        rs.getString("DiaChi"),
+                        rs.getString("SoDienThoai"),
+                        rs.getString("Email")
+                );
+                list.add(dg);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Lỗi khi lấy danh sách độc giả:");
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    public DocGia getById(int maDocGia) {
         DocGia dg = null;
         String sql = "SELECT * FROM DocGia where madocgia=?";
-        try{
-        
+        try {
             Connection conn = DBConnection.getConnection();
-     
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ps.setInt(1, maDocGia);
-             ResultSet rs = ps.executeQuery(); 
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, maDocGia);
+            ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                    dg = new DocGia(
-                    rs.getInt("maDocGia"),
-                    rs.getString("HoTen"),
-                    rs.getDate("NgaySinh"),
-                    rs.getString("DiaChi"),
-                    rs.getString("SoDienThoai"),
-                    rs.getString("Email")
-                );                
+                dg = new DocGia(
+                        rs.getInt("maDocGia"),
+                        rs.getString("HoTen"),
+                        rs.getDate("NgaySinh"),
+                        rs.getString("DiaChi"),
+                        rs.getString("SoDienThoai"),
+                        rs.getString("Email")
+                );
             }
 
         } catch (SQLException e) {
@@ -69,12 +93,12 @@ public class DocGiaDAO {
 
         return dg;
     }
+
     // Thêm độc giả mới
     public boolean insertDocGia(DocGia dg) {
         String sql = "INSERT INTO DocGia(HoTen, NgaySinh, DiaChi, SoDienThoai, Email) VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, dg.getHoTen());
             ps.setDate(2, new java.sql.Date(dg.getNgaySinh().getTime()));
@@ -105,8 +129,7 @@ public class DocGiaDAO {
     public boolean updateDocGia(DocGia dg) {
         String sql = "UPDATE DocGia SET HoTen = ?, NgaySinh = ?, DiaChi = ?, SoDienThoai = ?, Email = ? WHERE maDocGia = ?";
 
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, dg.getHoTen());
             ps.setDate(2, new java.sql.Date(dg.getNgaySinh().getTime()));
@@ -128,8 +151,7 @@ public class DocGiaDAO {
     public boolean deleteDocGia(int maDocGia) {
         String sql = "DELETE FROM DocGia WHERE maDocGia = ?";
 
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, maDocGia);
             return ps.executeUpdate() > 0;
 
@@ -145,19 +167,18 @@ public class DocGiaDAO {
         List<DocGia> list = new ArrayList<>();
         String sql = "SELECT * FROM DocGia WHERE HoTen LIKE ?";
 
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, "%" + keyword + "%");
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     DocGia dg = new DocGia(
-                        rs.getInt("maDocGia"),
-                        rs.getString("HoTen"),
-                        rs.getDate("NgaySinh"),
-                        rs.getString("DiaChi"),
-                        rs.getString("SoDienThoai"),
-                        rs.getString("Email")
+                            rs.getInt("maDocGia"),
+                            rs.getString("HoTen"),
+                            rs.getDate("NgaySinh"),
+                            rs.getString("DiaChi"),
+                            rs.getString("SoDienThoai"),
+                            rs.getString("Email")
                     );
                     list.add(dg);
                 }
@@ -170,12 +191,13 @@ public class DocGiaDAO {
 
         return list;
     }
-    
+
     public static void main(String[] args) {
         DocGiaDAO dao = new DocGiaDAO();
-         for(DocGia x: dao.getAll())
-         {
-             System.out.println(x);
-         }          
+        int page=1;
+        int pageSize=5;
+        for (DocGia x : dao.getByPage(page, pageSize)) {
+            System.out.println(x);
+        }
     }
 }

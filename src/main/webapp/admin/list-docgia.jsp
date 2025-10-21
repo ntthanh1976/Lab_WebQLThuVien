@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <title>Trang Quản trị Thư viện</title>
-        <%@ include file="layout/header.jsp" %>
+        <%@ include file="layout/header.jsp" %>       
     </head>
     <body>
         <%@ include file="layout/nav.jsp" %>
@@ -17,7 +17,6 @@
 
                 <div class="col-10 mt-3">
                     <div class="container mt-4">
-
                         <!-- Bảng danh sách độc giả -->
                         <div class="card shadow-sm">
                             <div class="card-header bg-white d-flex justify-content-between align-items-center">
@@ -65,12 +64,12 @@
                                                 <td>${dg.soDienThoai}</td>
                                                 <td>${dg.email}</td>
                                                 <td>
-                                                    <button class="btn btn-warning btn-sm btnEdit" data-bs-toggle="modal" data-bs-target="#modalEditReader">
+                                                    <a href="docgia?action=edit&id=${dg.maDocGia}" class="btn btn-warning btn-sm btnEdit">
                                                         <i class="bi bi-pencil-square"></i>
-                                                    </button>
-                                                    <button class="btn btn-danger btn-sm">
+                                                    </a>
+                                                    <a onclick="return confirm('Ban co dong y xoa doc gia?')" href="docgia?action=delete&id=${dg.maDocGia}" class="btn btn-danger btn-sm">
                                                         <i class="bi bi-trash"></i>
-                                                    </button>
+                                                    </a>
                                                 </td>
                                             </tr>          
                                             </c:forEach>                                         
@@ -78,8 +77,17 @@
                                     </table>
                                 </div>
                             </div>
-                        </div>
-
+                            <!--hien thi lien ket chon trang--->        
+                            <div>
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item ${currentPage==1?'disabled':''}"><a class="page-link" href="docgia?page=${currentPage-1}">Previous</a></li>                                    
+                                    <c:forEach var="page" begin="1" end="${tongsotrang}">                                    
+                                        <li class="page-item ${page == currentPage? 'active':''}"><a class="page-link" href="docgia?page=${page}">${page}</a></li>
+                                    </c:forEach>
+                                    <li class="page-item ${currentPage==tongsotrang?'disabled':''}"><a class="page-link" href="docgia?page=${currentPage+1}">Next</a></li>
+                                </ul>         
+                             </div>
+                        </div>         
                         <!-- Modal: Thêm độc giả -->
                         <div class="modal fade" id="modalAddReader" tabindex="-1" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
@@ -97,7 +105,7 @@
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Ngày sinh</label>
-                                                <input type="date" class="form-control" name="NgaySinh">
+                                                <input type="date" class="form-control" name="NgaySinh" required="">
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Địa chỉ</label>
