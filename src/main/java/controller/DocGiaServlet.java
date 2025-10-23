@@ -18,6 +18,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.DocGia;
 import model.DocGiaDAO;
 
@@ -49,6 +50,14 @@ public class DocGiaServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8"); 
         request.setCharacterEncoding("UTF-8");    
+        
+        HttpSession session = request.getSession(false); //lay session cho user
+        if(session==null || session.getAttribute("user")==null)
+        {
+           request.getRequestDispatcher("login.jsp").forward(request, response);
+        }               
+        
+        
        /*
          su dung tham so action de nhan dien thao tac tu client:
          action=list : liet ke danh sach doc gia

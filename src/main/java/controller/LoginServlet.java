@@ -17,8 +17,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author ADMIN
  */
-@WebServlet(name = "HomeServlet", urlPatterns = {"/trang-chu"})
-public class HomeServlet extends HttpServlet {
+@WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
+public class LoginServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,13 +32,17 @@ public class HomeServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession(false); //lay session cho user
-        if(session==null || session.getAttribute("user")==null)
-        {
-           request.getRequestDispatcher("login.jsp").forward(request, response);
-        } 
-        request.getRequestDispatcher("/admin/dashboard.jsp").forward(request, response);
-        
+        String user = request.getParameter("username"); 
+        String pass = request.getParameter("password"); 
+ 
+        if ("admin".equals(user) && "123".equals(pass)) { 
+            HttpSession session = request.getSession(); //tao session cho user
+            session.setAttribute("user", user);  //luu lai du lieu vao session (cua user)
+            response.sendRedirect("trang-chu"); 
+        } else { 
+            request.setAttribute("error", "Sai tên đăng nhập hoặc mật khẩu!"); 
+            request.getRequestDispatcher("login.jsp").forward(request, response); 
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

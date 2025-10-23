@@ -17,8 +17,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author ADMIN
  */
-@WebServlet(name = "HomeServlet", urlPatterns = {"/trang-chu"})
-public class HomeServlet extends HttpServlet {
+@WebServlet(name = "LogoutServlet", urlPatterns = {"/logout"})
+public class LogoutServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,13 +32,13 @@ public class HomeServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession(false); //lay session cho user
-        if(session==null || session.getAttribute("user")==null)
+        HttpSession session = request.getSession(); //lay session cho user
+        if(session!=null && session.getAttribute("user")!=null)
         {
-           request.getRequestDispatcher("login.jsp").forward(request, response);
-        } 
-        request.getRequestDispatcher("/admin/dashboard.jsp").forward(request, response);
-        
+           session.removeAttribute("user");
+           response.sendRedirect("docgia");
+        }
+            
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

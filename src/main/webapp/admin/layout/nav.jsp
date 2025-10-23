@@ -6,7 +6,7 @@
     </a>
     <div class="d-flex align-items-center">
       <span class="navbar-text text-light me-3">
-        <i class="bi bi-person-circle me-1"></i> Quản trị viên
+          <i class="bi bi-person-circle me-1"></i> ${sessionScope.user}
       </span>
       <a href="logout" class="btn btn-outline-light btn-sm">
         <i class="bi bi-box-arrow-right me-1"></i> Đăng xuất

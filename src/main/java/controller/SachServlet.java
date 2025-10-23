@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -31,6 +32,13 @@ public class SachServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
+        HttpSession session = request.getSession(false); //lay session cho user
+        if(session==null || session.getAttribute("user")==null)
+        {
+           request.getRequestDispatcher("login.jsp").forward(request, response);
+        } 
+        
         request.getRequestDispatcher("/admin/list-sach.jsp").forward(request, response);
     }
 
