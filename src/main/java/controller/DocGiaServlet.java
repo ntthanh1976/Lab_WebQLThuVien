@@ -48,7 +48,7 @@ public class DocGiaServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8"); 
-        request.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8");    
        /*
          su dung tham so action de nhan dien thao tac tu client:
          action=list : liet ke danh sach doc gia
