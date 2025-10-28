@@ -6,12 +6,15 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.swing.text.DateFormatter;
 
 /**
  *
@@ -32,12 +35,13 @@ public class HomeServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession(false); //lay session cho user
-        if(session==null || session.getAttribute("user")==null)
-        {
-           request.getRequestDispatcher("login.jsp").forward(request, response);
-        } 
-        request.getRequestDispatcher("/admin/dashboard.jsp").forward(request, response);
+//        HttpSession session = request.getSession(false); //lay session cho user
+//        if(session==null || session.getAttribute("user")==null)
+//        {
+//           request.getRequestDispatcher("login.jsp").forward(request, response);
+//        }   
+        
+        request.getRequestDispatcher("/admin/dashboard.jsp").forward(request, response);        
         
     }
 
@@ -79,5 +83,5 @@ public class HomeServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
+   
 }

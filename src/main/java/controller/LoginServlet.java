@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.UserDAO;
+import model.User;
 
 /**
  *
@@ -35,9 +37,13 @@ public class LoginServlet extends HttpServlet {
         String user = request.getParameter("username"); 
         String pass = request.getParameter("password"); 
  
-        if ("admin".equals(user) && "123".equals(pass)) { 
+        //if ("admin".equals(user) && "123".equals(pass)) { // kiem tra ton tai
+        UserDAO uDAO = new UserDAO();        
+        User u = uDAO.checkLogin(user, pass); //goi DAO de kiem tra ton tai
+        if(u!=null) //xac thuc thanh cong 
+        {
             HttpSession session = request.getSession(); //tao session cho user
-            session.setAttribute("user", user);  //luu lai du lieu vao session (cua user)
+            session.setAttribute("user", u);  //luu lai du lieu vao session (cua user)
             response.sendRedirect("trang-chu"); 
         } else { 
             request.setAttribute("error", "Sai tên đăng nhập hoặc mật khẩu!"); 

@@ -32,11 +32,12 @@ public class LogoutServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession(); //lay session cho user
+        HttpSession session = request.getSession(false); //lay session cho user
         if(session!=null && session.getAttribute("user")!=null)
         {
-           session.removeAttribute("user");
-           response.sendRedirect("docgia");
+           session.removeAttribute("user");  
+          // session.invalidate();
+           response.sendRedirect("trang-chu");
         }
             
     }

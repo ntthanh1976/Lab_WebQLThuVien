@@ -49,13 +49,13 @@ public class DocGiaServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8"); 
-        request.setCharacterEncoding("UTF-8");    
-        
-        HttpSession session = request.getSession(false); //lay session cho user
-        if(session==null || session.getAttribute("user")==null)
-        {
-           request.getRequestDispatcher("login.jsp").forward(request, response);
-        }               
+     //   request.setCharacterEncoding("UTF-8");    
+        //kiem CHUNG lai thong tin da xac thuc cho nguoi dung
+//        HttpSession session = request.getSession(false); //lay session cho user
+//        if(session==null || session.getAttribute("user")==null) //chua xac thuc thanh cong
+//        {
+//           request.getRequestDispatcher("login.jsp").forward(request, response);
+//        }               
         
         
        /*
